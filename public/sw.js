@@ -1,6 +1,6 @@
 /* Works at site root or in a subpath (scope follows the SW URL). */
 const BASE = new URL('.', self.location).pathname.replace(/\/$/, '')
-const CACHE = '3dpet-shell-v15'
+const CACHE = '3dpet-shell-v16'
 const MODEL_CACHE = '3dpet-models-v1'
 
 const SHELL = [

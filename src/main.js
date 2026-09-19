@@ -965,6 +965,14 @@ function hungerOf(petId) {
   return Math.max(0, Math.min(HUNGER_FULL, row.value - dropped))
 }
 
+function hungerShown(petId) {
+  return Math.min(HUNGER_FULL, Math.ceil(hungerOf(petId)))
+}
+
+function canFeed() {
+  return loadStatus === 'ready' && !!eatAction && !!currentPet && hungerShown(currentPet.id) < HUNGER_FULL
+}
+
 function ensureHunger(petId) {
   const map = readHungerMap()
   if (map[petId]) return
@@ -985,14 +993,14 @@ function updateFullness() {
   const name = currentPet.blurb || currentPet.name
   fullnessMarkEl.textContent = name
   fullnessMarkEl.classList.toggle('wide', [...name].length > 1)
-  fullnessValueEl.textContent = String(Math.floor(hungerOf(currentPet.id)))
+  fullnessValueEl.textContent = String(hungerShown(currentPet.id))
   refreshFeedButton()
 }
 
 function refreshFeedButton() {
-  const canShow = loadStatus === 'ready' && eatAction && currentPet && hungerOf(currentPet.id) < HUNGER_FULL
-  feedBtn.hidden = !canShow
-  feedBtn.disabled = busy === 'feed' || !!pendingGain
+  const allowed = canFeed()
+  feedBtn.hidden = !allowed
+  feedBtn.disabled = !allowed || busy === 'feed' || !!pendingGain
 }
 
 function flushGain() {
@@ -1101,8 +1109,7 @@ function attachFood(kind) {
 }
 
 function startFeed() {
-  if (busy === 'feed' || pendingGain || loadStatus !== 'ready' || !eatAction || !currentPet) return
-  if (hungerOf(currentPet.id) >= HUNGER_FULL) return
+  if (busy === 'feed' || pendingGain || !canFeed()) return
   busy = 'feed'
   attachFood(FOOD_KIND[currentPet.id] || 'grass')
   playClip(eatAction, { fade: 0.12, loop: false })
@@ -1242,11 +1249,36 @@ canvas.addEventListener('pointerup', (e) => {
   if (hitPet(e.clientX, e.clientY)) playTrick()
 })
 
+function isStandalone() {
+  return window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches
+}
+
 function viewportSize() {
-  const view = window.visualViewport
+  const standalone = isStandalone()
+  document.documentElement.classList.toggle('standalone', standalone)
+  let width = window.innerWidth
+  let height = window.innerHeight
+  if (!standalone && window.visualViewport) {
+    width = window.visualViewport.width
+    height = window.visualViewport.height
+  }
+  if (standalone) {
+    const portrait = height >= width
+    const longSide = Math.max(window.screen.width, window.screen.height)
+    const shortSide = Math.min(window.screen.width, window.screen.height)
+    const screenH = portrait ? longSide : shortSide
+    const screenW = portrait ? shortSide : longSide
+    if (screenH > height && screenH - height < 180) height = screenH
+    if (screenW > width && screenW - width < 80) width = screenW
+    const px = `${Math.round(height)}px`
+    document.documentElement.style.height = px
+    document.body.style.height = px
+    const app = document.querySelector('#app')
+    if (app) app.style.height = px
+  }
   return {
-    width: Math.round(view?.width || window.innerWidth),
-    height: Math.round(view?.height || window.innerHeight),
+    width: Math.round(width),
+    height: Math.round(height),
   }
 }
 
