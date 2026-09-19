@@ -1,6 +1,6 @@
-/* Minimal PWA service worker for GitHub Pages (/3dpet/). */
-const BASE = '/3dpet'
-const CACHE = '3dpet-shell-v3'
+/* Works at site root or in a subpath (scope follows the SW URL). */
+const BASE = new URL('.', self.location).pathname.replace(/\/$/, '')
+const CACHE = '3dpet-shell-v4'
 
 const SHELL = [
   `${BASE}/`,
