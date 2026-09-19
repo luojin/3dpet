@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1"
+    />
+    <meta name="theme-color" content="#e07a3d" />
+    <meta name="description" content="卡通 3D 宠物 · 点一下换动作" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="3D Pet" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
+    <title>3D Pet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Outfit:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="/3dpet/assets/index-ComDXg1t.js"></script>
+    <link rel="stylesheet" crossorigin href="/3dpet/assets/index-COeo9frG.css">
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="scene"></canvas>
+
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark">🐾</span>
+          <div>
+            <p class="brand-name">3D Pet</p>
+            <p class="brand-sub">点一下，换个动作</p>
+          </div>
+        </div>
+        <button id="settingsBtn" class="icon-btn" type="button" aria-label="设置">
+          设置
+        </button>
+      </header>
+
+      <div class="hud">
+        <p id="petName" class="pet-name">加载中…</p>
+        <p id="animName" class="anim-name">—</p>
+        <p class="hint">单击任意处 · 随机动作</p>
+      </div>
+
+      <aside id="settings" class="settings" hidden>
+        <div class="settings-panel">
+          <div class="settings-head">
+            <h2>选择宠物</h2>
+            <button id="closeSettings" class="icon-btn" type="button">关闭</button>
+          </div>
+          <p class="settings-note">
+            资源来自 <a href="https://poly.pizza" target="_blank" rel="noreferrer">poly.pizza</a>
+            （Quaternius，CC0）。会记住上次宠物和每个宠物的最后动作。
+          </p>
+          <p class="settings-note install-tip">
+            <strong>加到 iPhone 桌面：</strong>Safari 打开本页 → 点底部分享 →「添加到主屏幕」。
+          </p>
+          <div id="petList" class="pet-list"></div>
+          <p class="credit">
+            Models by
+            <a href="https://quaternius.com" target="_blank" rel="noreferrer">Quaternius</a>
+            via poly.pizza · CC0
+          </p>
+        </div>
+      </aside>
+    </div>
+  </body>
+</html>
