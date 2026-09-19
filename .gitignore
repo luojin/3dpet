@@ -3,5 +3,6 @@ dist
 .DS_Store
 downloads
 .tools
+.npm-cache
 *.log
 .vercel

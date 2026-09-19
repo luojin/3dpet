@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1"
     />
-    <meta name="theme-color" content="#e07a3d" />
+    <meta name="theme-color" content="#7ec8f0" />
     <meta name="description" content="卡通 3D 宠物 · 点一下换动作" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -27,24 +27,27 @@
     <div id="app">
       <canvas id="scene"></canvas>
 
-      <header class="topbar">
-        <div class="brand">
-          <span class="brand-mark">🐾</span>
-          <div>
-            <p class="brand-name">3D Pet</p>
-            <p class="brand-sub">点一下，换个动作</p>
-          </div>
+      <button id="fullness" class="fullness" type="button" hidden>
+        <span id="fullnessMark" class="fullness-mark">鹿</span>
+        <div>
+          <p class="fullness-label">饱腹度</p>
+          <strong id="fullnessValue">100</strong>
         </div>
-        <button id="settingsBtn" class="icon-btn" type="button" aria-label="设置">
-          设置
-        </button>
-      </header>
+      </button>
 
-      <div class="hud">
-        <p id="petName" class="pet-name">加载中…</p>
-        <p id="animName" class="anim-name">—</p>
-        <p class="hint">单击任意处 · 随机动作</p>
-      </div>
+      <p id="status" class="status" hidden>加载中…</p>
+
+      <button id="feedBtn" class="feed-btn" type="button" hidden aria-label="喂食">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="26" fill="#e2a15a" />
+          <circle cx="22" cy="26" r="3.2" fill="#8a5a32" />
+          <circle cx="40" cy="22" r="2.6" fill="#8a5a32" />
+          <circle cx="36" cy="40" r="3" fill="#8a5a32" />
+          <circle cx="23" cy="40" r="2.2" fill="#8a5a32" />
+          <circle cx="46" cy="33" r="2.4" fill="#8a5a32" />
+        </svg>
+      </button>
+      <p id="feedGain" class="feed-gain" hidden>+10</p>
 
       <aside id="settings" class="settings" hidden>
         <div class="settings-panel">
@@ -54,11 +57,12 @@
           </div>
           <p class="settings-note">
             资源来自 <a href="https://poly.pizza" target="_blank" rel="noreferrer">poly.pizza</a>
-            （Quaternius，CC0）。会记住上次宠物和每个宠物的最后动作。
+            （Quaternius，CC0）。会记住上次宠物、视角，以及每只动物的饱腹度。加载失败时点一下画面即可重试。
           </p>
           <p class="settings-note install-tip">
             <strong>加到 iPhone 桌面：</strong>Safari 打开本页 → 点底部分享 →「添加到主屏幕」。
           </p>
+          <button id="resetViewBtn" class="reset-view-btn" type="button">恢复默认视角</button>
           <div id="petList" class="pet-list"></div>
           <p class="credit">
             Models by

@@ -1,8 +1,8 @@
 import { defineConfig } from 'vite'
 
-// GitHub Pages project site: https://luojin.github.io/3dpet/
+// Relative paths so the same build works on any static host.
 export default defineConfig({
-  base: '/3dpet/',
+  base: './',
   server: {
     watch: {
       ignored: ['**/downloads/**', '**/node_modules/**', '**/.tools/**'],

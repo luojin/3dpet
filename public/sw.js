@@ -1,6 +1,7 @@
-/* Minimal PWA service worker for GitHub Pages (/3dpet/). */
-const BASE = '/3dpet'
-const CACHE = '3dpet-shell-v3'
+/* Works at site root or in a subpath (scope follows the SW URL). */
+const BASE = new URL('.', self.location).pathname.replace(/\/$/, '')
+const CACHE = '3dpet-shell-v15'
+const MODEL_CACHE = '3dpet-models-v1'
 
 const SHELL = [
   `${BASE}/`,
@@ -18,7 +19,7 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))),
+      Promise.all(keys.filter((k) => k !== CACHE && k !== MODEL_CACHE).map((k) => caches.delete(k))),
     ).then(() => self.clients.claim()),
   )
 })
@@ -31,23 +32,9 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return
   if (!url.pathname.startsWith(`${BASE}/`)) return
 
-  if (url.pathname.startsWith(`${BASE}/models/`)) {
-    event.respondWith(
-      caches.open(CACHE).then(async (cache) => {
-        const cached = await cache.match(request)
-        if (cached) return cached
-        try {
-          const res = await fetch(request)
-          if (res.ok) cache.put(request, res.clone())
-          return res
-        } catch (err) {
-          if (cached) return cached
-          throw err
-        }
-      }),
-    )
-    return
-  }
+  // Models must come from the network. Caching GLBs on iOS truncates them,
+  // and GLTFLoader then throws "length out of range of buffer".
+  if (url.pathname.startsWith(`${BASE}/models/`) || url.pathname.endsWith('/sw.js')) return
 
   event.respondWith(
     caches.open(CACHE).then(async (cache) => {
