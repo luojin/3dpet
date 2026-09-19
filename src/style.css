@@ -1,0 +1,258 @@
+:root {
+  --bg-top: #8fd3c8;
+  --bg-mid: #f7e7ce;
+  --bg-bot: #f3c98b;
+  --ink: #2a2a32;
+  --muted: #5c5c6a;
+  --panel: rgba(255, 251, 245, 0.92);
+  --accent: #e07a3d;
+  --accent-soft: #ffd7b8;
+  --shadow: 0 18px 50px rgba(42, 42, 50, 0.18);
+  --radius: 22px;
+  font-family: Outfit, system-ui, sans-serif;
+  color: var(--ink);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#app {
+  position: relative;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, #fff6e8 0%, transparent 55%),
+    linear-gradient(165deg, var(--bg-top) 0%, var(--bg-mid) 48%, var(--bg-bot) 100%);
+}
+
+#scene {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: pointer;
+}
+
+.topbar {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(18px + env(safe-area-inset-top, 0px)) 20px 18px;
+  pointer-events: none;
+}
+
+.topbar > * {
+  pointer-events: auto;
+}
+
+.brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--panel);
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+.brand-mark {
+  font-size: 1.4rem;
+}
+
+.brand-name {
+  margin: 0;
+  font-family: Nunito, Outfit, sans-serif;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+
+.brand-sub {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.icon-btn {
+  border: 0;
+  background: var(--panel);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.icon-btn:hover {
+  background: #fff;
+}
+
+.hud {
+  position: absolute;
+  left: 50%;
+  bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: 2;
+  text-align: center;
+  padding: 14px 22px;
+  background: var(--panel);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+  min-width: min(86vw, 320px);
+}
+
+.install-tip {
+  background: #fff8f2;
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+
+.pet-name {
+  margin: 0;
+  font-family: Nunito, Outfit, sans-serif;
+  font-weight: 800;
+  font-size: 1.35rem;
+}
+
+.anim-name {
+  margin: 4px 0 0;
+  font-size: 0.95rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.hint {
+  margin: 8px 0 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.settings {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: rgba(42, 42, 50, 0.35);
+  display: grid;
+  place-items: end center;
+  padding: 16px;
+}
+
+.settings[hidden] {
+  display: none;
+}
+
+.settings-panel {
+  width: min(520px, 100%);
+  max-height: min(78vh, 640px);
+  overflow: auto;
+  background: var(--panel);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  padding: 20px;
+  backdrop-filter: blur(14px);
+}
+
+.settings-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.settings-head h2 {
+  margin: 0;
+  font-family: Nunito, Outfit, sans-serif;
+  font-size: 1.35rem;
+}
+
+.settings-note {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.settings-note code {
+  font-size: 0.8em;
+  background: var(--accent-soft);
+  padding: 1px 6px;
+  border-radius: 6px;
+}
+
+.pet-list {
+  display: grid;
+  gap: 10px;
+}
+
+.pet-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  border: 2px solid transparent;
+  background: #fff;
+  border-radius: 18px;
+  padding: 14px 16px;
+  cursor: pointer;
+  font: inherit;
+  box-shadow: 0 6px 18px rgba(42, 42, 50, 0.06);
+}
+
+.pet-card:hover {
+  border-color: var(--accent-soft);
+}
+
+.pet-card.active {
+  border-color: var(--accent);
+  background: #fff8f2;
+}
+
+.pet-card strong {
+  display: block;
+  font-family: Nunito, Outfit, sans-serif;
+  font-size: 1.05rem;
+}
+
+.pet-card span {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.pet-card .badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+.credit {
+  margin: 16px 0 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.credit a {
+  color: var(--ink);
+}
