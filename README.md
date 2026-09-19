@@ -2,7 +2,7 @@
 
 卡通 3D 宠物网页 App（PWA）。设置页换宠物，单击画面随机切换动作；会记住上次宠物和每个宠物的最后动作。
 
-线上地址（部署后）：https://abnerjluo.github.io/3dpet/
+线上地址：https://luojin.github.io/3dpet/
 
 ## 本地运行
 

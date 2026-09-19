@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 
-// GitHub Pages project site: https://abnerjluo.github.io/3dpet/
+// GitHub Pages project site: https://luojin.github.io/3dpet/
 export default defineConfig({
   base: '/3dpet/',
   server: {
