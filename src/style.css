@@ -60,8 +60,8 @@ html.standalone #app {
 .fullness {
   position: absolute;
   z-index: 3;
-  bottom: max(14px, env(safe-area-inset-bottom, 0px));
-  left: max(10px, env(safe-area-inset-left, 0px));
+  top: max(12px, env(safe-area-inset-top, 0px));
+  right: max(10px, env(safe-area-inset-right, 0px));
   display: flex;
   align-items: center;
   gap: 8px;
@@ -70,12 +70,13 @@ html.standalone #app {
   padding: 0 12px 0 4px;
   border: 0;
   border-radius: 999px;
-  background: rgba(255, 251, 245, 0.92);
-  box-shadow: 0 6px 16px rgba(42, 42, 50, 0.16);
+  background: rgba(255, 251, 245, 0.42);
+  box-shadow: 0 4px 12px rgba(42, 42, 50, 0.08);
   color: inherit;
   font: inherit;
   text-align: left;
   cursor: pointer;
+  backdrop-filter: blur(6px);
 }
 
 .icon-btn {
@@ -107,7 +108,7 @@ html.standalone #app {
   border-radius: 999px;
   display: grid;
   place-items: center;
-  background: #ffd7b8;
+  background: rgba(255, 215, 184, 0.7);
   color: #c45b24;
   font-family: Nunito, Outfit, sans-serif;
   font-weight: 800;
@@ -184,6 +185,42 @@ html.standalone #app {
 .feed-btn:disabled {
   opacity: 0.45;
   cursor: default;
+}
+
+.joystick {
+  position: absolute;
+  z-index: 3;
+  left: max(12px, env(safe-area-inset-left, 0px));
+  bottom: max(14px, env(safe-area-inset-bottom, 0px));
+  width: 118px;
+  height: 118px;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.joystick-base {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  background: rgba(255, 251, 245, 0.16);
+  border: 2px solid rgba(255, 255, 255, 0.28);
+  box-shadow: inset 0 0 0 1px rgba(42, 42, 50, 0.04);
+}
+
+.joystick-knob {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border-radius: 999px;
+  background: rgba(255, 248, 236, 0.42);
+  box-shadow: 0 4px 12px rgba(42, 42, 50, 0.1);
+  border: 2px solid rgba(224, 122, 61, 0.18);
+  will-change: transform;
 }
 
 .feed-gain {

@@ -2,6 +2,17 @@ import './style.css'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+import {
+  setCreekCurve,
+  addBridgeZone,
+  tryMove,
+  onBridge,
+  canStandAt,
+  colliders,
+  resetWorldCollision,
+  PET_RADIUS,
+} from './world.js'
+import { loadVillages, registerFarmColliders } from './villages.js'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -69,6 +80,8 @@ const settingsEl = document.querySelector('#settings')
 const petListEl = document.querySelector('#petList')
 const resetViewBtn = document.querySelector('#resetViewBtn')
 const closeSettings = document.querySelector('#closeSettings')
+const joystickEl = document.querySelector('#joystick')
+const joystickKnobEl = document.querySelector('#joystickKnob')
 
 const renderer = new THREE.WebGLRenderer({
   canvas,
@@ -92,7 +105,7 @@ const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 controls.enablePan = false
 controls.minDistance = 2.4
-controls.maxDistance = 22
+controls.maxDistance = 85
 controls.maxPolarAngle = Math.PI * 0.49
 controls.target.copy(DEFAULT_TARGET)
 
@@ -102,11 +115,11 @@ sun.position.set(4.5, 8, 3)
 sun.castShadow = true
 sun.shadow.mapSize.set(1024, 1024)
 sun.shadow.camera.near = 0.5
-sun.shadow.camera.far = 24
-sun.shadow.camera.left = -8
-sun.shadow.camera.right = 8
-sun.shadow.camera.top = 8
-sun.shadow.camera.bottom = -8
+sun.shadow.camera.far = 120
+sun.shadow.camera.left = -55
+sun.shadow.camera.right = 55
+sun.shadow.camera.top = 55
+sun.shadow.camera.bottom = -55
 scene.add(sun)
 scene.add(new THREE.HemisphereLight(0x9fd4ff, 0x7dce4a, 0.55))
 
@@ -325,6 +338,8 @@ function addBridgeAt(point, tangent) {
   bridge.position.set(point.x, 0, point.z)
   bridge.lookAt(point.x + side.x, 0, point.z + side.z)
   scene.add(bridge)
+  // Bridge landings: clear corridor ~3.5m on both banks so the pet can enter/exit.
+  addBridgeZone(point.x, point.z, deckW * 0.7, span * 0.7, side.x, side.z)
 }
 
 function addMountains() {
@@ -368,6 +383,7 @@ function addCreekAndBridge() {
     [5.0, 0, 42],
   ].map((p) => new THREE.Vector3(...p))
   const curve = new THREE.CatmullRomCurve3(points)
+  setCreekCurve(curve)
   const bankMat = paint(0xc4a06a)
   bankMat.side = THREE.DoubleSide
   const bank = addRibbon(curve, 2.6, 0.02, bankMat)
@@ -379,11 +395,28 @@ function addCreekAndBridge() {
   const water = addRibbon(curve, 1.85, 0.08, waterMat)
   scene.add(bank, water)
 
+  const anchor = new THREE.Vector3(5.1, 0, -6.4)
+  let bridgeT = 0.5
+  let nearest = Infinity
+  for (let i = 0; i <= 80; i += 1) {
+    const t = i / 80
+    const dist = curve.getPoint(t).distanceTo(anchor)
+    if (dist < nearest) {
+      nearest = dist
+      bridgeT = t
+    }
+  }
+  const bridgePoint = curve.getPoint(bridgeT)
+  const bridgeTang = curve.getTangent(bridgeT)
+  addBridgeAt(bridgePoint, bridgeTang)
+
   const rockMat = paint(0x9a8f82)
   const reedMat = paint(0x3d9a32)
   for (let i = 1; i < 28; i += 1) {
     const t = i / 29
     const p = curve.getPoint(t)
+    // Keep both bridge approaches clear of bank rocks and reeds.
+    if (p.distanceTo(bridgePoint) < 4.2) continue
     const tang = curve.getTangent(t)
     const side = new THREE.Vector3(-tang.z, 0, tang.x).normalize()
     const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.12 + (i % 3) * 0.04, 0), rockMat)
@@ -400,18 +433,6 @@ function addCreekAndBridge() {
     }
   }
 
-  const anchor = new THREE.Vector3(5.1, 0, -6.4)
-  let bridgeT = 0.5
-  let nearest = Infinity
-  for (let i = 0; i <= 80; i += 1) {
-    const t = i / 80
-    const dist = curve.getPoint(t).distanceTo(anchor)
-    if (dist < nearest) {
-      nearest = dist
-      bridgeT = t
-    }
-  }
-  addBridgeAt(curve.getPoint(bridgeT), curve.getTangent(bridgeT))
   addMountains()
 }
 
@@ -492,6 +513,7 @@ let windmillBlades = null
 let creekFlow = null
 
 function buildFarm() {
+  resetWorldCollision()
   skyDome = new THREE.Mesh(
     new THREE.SphereGeometry(46, 24, 16),
     new THREE.MeshBasicMaterial({
@@ -547,11 +569,13 @@ function buildFarm() {
   addCloud(-2.4, 8.2, -6.5, 1.25)
   addCloud(0.6, 9.0, -9.5, 1)
   addCloud(-0.8, 7.1, -4.2, 0.85)
+  registerFarmColliders()
 }
 
 buildFarm()
 
 const loader = new GLTFLoader()
+loadVillages(scene, loader).catch((err) => console.warn('villages', err))
 const clock = new THREE.Clock()
 
 let mixer = null
@@ -568,6 +592,17 @@ let eatAction = null
 let busy = null
 let foodMesh = null
 let pendingGain = null
+let petFootY = 0.03
+const petSpawn = { x: 0, z: 0, rotY: 0 }
+const stick = { active: false, x: 0, y: 0, pointerId: null }
+const followCam = {
+  offset: new THREE.Vector3(),
+  targetOffset: new THREE.Vector3(),
+  ready: false,
+}
+const WALK_SPEED = 2.15
+const tmpForward = new THREE.Vector3()
+const tmpRight = new THREE.Vector3()
 const pointer = { x: 0, y: 0 }
 const raycaster = new THREE.Raycaster()
 const pointerNdc = new THREE.Vector2()
@@ -605,6 +640,22 @@ function isEatName(name) {
   return /eat/i.test(name)
 }
 
+function isWalkName(name) {
+  return /walk|run|gallop/i.test(prettyAnimName(name))
+}
+
+function walkActions() {
+  const preferred = actions.filter((action) => {
+    const n = prettyAnimName(action.getClip().name).toLowerCase()
+    return n === 'walk' || n === 'walkslow'
+  })
+  if (preferred.length) return preferred
+  return actions.filter((action) => {
+    const n = prettyAnimName(action.getClip().name).toLowerCase()
+    return n === 'run' || n === 'gallop' || /walk|run|gallop/i.test(n)
+  })
+}
+
 function idleActions() {
   return actions.filter((action) => isIdleName(action.getClip().name))
 }
@@ -626,11 +677,22 @@ function playIdle(fade = 0.3) {
   playClip(next, { fade, loop: true })
 }
 
+function playWalk(fade = 0.15) {
+  const pool = walkActions()
+  if (!pool.length) return false
+  const currentName = currentAction ? prettyAnimName(currentAction.getClip().name).toLowerCase() : ''
+  if (currentAction && (currentName === 'walk' || currentName === 'walkslow' || currentName === 'run' || currentName === 'gallop')) {
+    return true
+  }
+  playClip(pool[0], { fade, loop: true })
+  return true
+}
+
 function playTrick() {
-  if (busy) return
+  if (busy || stick.active) return
   const pool = actions.filter((action) => {
     const name = action.getClip().name
-    return !isIdleName(name) && !isEatName(name)
+    return !isIdleName(name) && !isEatName(name) && !isWalkName(name)
   })
   if (!pool.length) {
     playIdle(0.2)
@@ -662,7 +724,7 @@ function onMixerFinished(event) {
 }
 
 function onMixerLoop(event) {
-  if (busy || event.action !== currentAction) return
+  if (busy || stick.active || event.action !== currentAction) return
   if (!isIdleName(event.action.getClip().name)) return
   const pool = idleActions().filter((action) => action !== event.action)
   if (!pool.length) return
@@ -749,6 +811,10 @@ function framePet(root, preferredScale) {
   root.position.z -= center.z
   root.position.y -= scaled.min.y
   root.position.y += 0.03
+  petFootY = root.position.y
+  petSpawn.x = root.position.x
+  petSpawn.z = root.position.z
+  petSpawn.rotY = root.rotation.y
 
   suppressViewSave = true
   controls.target.copy(DEFAULT_TARGET)
@@ -801,15 +867,30 @@ function applySavedView(petId) {
 
 function resetAllViews() {
   localStorage.removeItem(STORAGE_VIEWS)
+  if (stick.active) {
+    stick.active = false
+    stick.pointerId = null
+    stick.x = 0
+    stick.y = 0
+    if (joystickKnobEl) joystickKnobEl.style.transform = 'translate(0px, 0px)'
+  }
+  if (petRoot) {
+    petRoot.position.set(petSpawn.x, petFootY, petSpawn.z)
+    petRoot.rotation.y = petSpawn.rotY
+  }
   suppressViewSave = true
   controls.target.copy(DEFAULT_TARGET)
   camera.position.copy(DEFAULT_CAMERA)
   controls.update()
   suppressViewSave = false
+  if (petRoot) captureFollowOffset()
   settingsEl.hidden = true
 }
 
-controls.addEventListener('change', scheduleSaveView)
+controls.addEventListener('change', () => {
+  scheduleSaveView()
+  if (!stick.active) captureFollowOffset()
+})
 window.addEventListener('pagehide', () => {
   if (loadStatus === 'ready' && currentPet) saveView(currentPet.id)
 })
@@ -1103,13 +1184,20 @@ function removeFood() {
 function attachFood(kind) {
   removeFood()
   const food = makeFood(kind)
-  food.position.set(0.02, 0.02, 0.52)
+  const ox = petRoot?.position.x || 0
+  const oz = petRoot?.position.z || 0
+  const yaw = petRoot?.rotation.y || 0
+  food.position.set(
+    ox + Math.sin(yaw) * 0.52,
+    (petRoot?.position.y || 0) + 0.02,
+    oz + Math.cos(yaw) * 0.52,
+  )
   scene.add(food)
   foodMesh = food
 }
 
 function startFeed() {
-  if (busy === 'feed' || pendingGain || !canFeed()) return
+  if (busy === 'feed' || pendingGain || stick.active || !canFeed()) return
   busy = 'feed'
   attachFood(FOOD_KIND[currentPet.id] || 'grass')
   playClip(eatAction, { fade: 0.12, loop: false })
@@ -1293,16 +1381,126 @@ window.addEventListener('resize', resize)
 window.visualViewport?.addEventListener('resize', resize)
 resize()
 
+function setStickFromEvent(event) {
+  if (!joystickEl) return
+  const rect = joystickEl.getBoundingClientRect()
+  const cx = rect.left + rect.width / 2
+  const cy = rect.top + rect.height / 2
+  const max = rect.width * 0.34
+  let dx = event.clientX - cx
+  let dy = event.clientY - cy
+  const len = Math.hypot(dx, dy) || 1
+  if (len > max) {
+    dx = (dx / len) * max
+    dy = (dy / len) * max
+  }
+  stick.x = dx / max
+  stick.y = -dy / max
+  if (joystickKnobEl) {
+    joystickKnobEl.style.transform = `translate(${dx}px, ${dy}px)`
+  }
+}
+
+function captureFollowOffset() {
+  if (!petRoot) return
+  followCam.offset.copy(camera.position).sub(petRoot.position)
+  followCam.targetOffset.copy(controls.target).sub(petRoot.position)
+  followCam.ready = true
+}
+
+function applyFollowCamera() {
+  if (!stick.active || !petRoot || !followCam.ready) return
+  camera.position.copy(petRoot.position).add(followCam.offset)
+  controls.target.copy(petRoot.position).add(followCam.targetOffset)
+  suppressViewSave = true
+  controls.update()
+  suppressViewSave = false
+}
+
+function endStick() {
+  stick.active = false
+  stick.pointerId = null
+  stick.x = 0
+  stick.y = 0
+  controls.enableRotate = true
+  controls.enableZoom = true
+  if (joystickKnobEl) joystickKnobEl.style.transform = 'translate(0px, 0px)'
+  if (loadStatus === 'ready' && busy !== 'feed' && busy !== 'trick' && petRoot) {
+    playIdle(0.2)
+  }
+  scheduleSaveView()
+}
+
+if (joystickEl) {
+  joystickEl.addEventListener('pointerdown', (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    stick.active = true
+    stick.pointerId = event.pointerId
+    captureFollowOffset()
+    controls.enableRotate = false
+    controls.enableZoom = false
+    joystickEl.setPointerCapture?.(event.pointerId)
+    setStickFromEvent(event)
+  })
+  joystickEl.addEventListener('pointermove', (event) => {
+    if (!stick.active || stick.pointerId !== event.pointerId) return
+    event.preventDefault()
+    event.stopPropagation()
+    setStickFromEvent(event)
+  })
+  const stop = (event) => {
+    if (stick.pointerId !== null && event.pointerId !== stick.pointerId) return
+    endStick()
+  }
+  joystickEl.addEventListener('pointerup', stop)
+  joystickEl.addEventListener('pointercancel', stop)
+}
+
+function updatePetMovement(dt) {
+  if (!petRoot || loadStatus !== 'ready') return
+  if (busy === 'feed' || busy === 'trick') return
+  const mag = Math.hypot(stick.x, stick.y)
+  if (!stick.active || mag < 0.18) {
+    if (stick.active && mag < 0.18 && currentAction && isWalkName(currentAction.getClip().name)) {
+      playIdle(0.2)
+    }
+    return
+  }
+
+  camera.getWorldDirection(tmpForward)
+  tmpForward.y = 0
+  if (tmpForward.lengthSq() < 1e-6) tmpForward.set(0, 0, -1)
+  else tmpForward.normalize()
+  tmpRight.set(-tmpForward.z, 0, tmpForward.x)
+
+  const wishX = tmpRight.x * stick.x + tmpForward.x * stick.y
+  const wishZ = tmpRight.z * stick.x + tmpForward.z * stick.y
+  const wishLen = Math.hypot(wishX, wishZ) || 1
+  const dirX = wishX / wishLen
+  const dirZ = wishZ / wishLen
+  const speed = WALK_SPEED * Math.min(1, mag)
+  const next = tryMove(petRoot.position.x, petRoot.position.z, dirX * speed * dt, dirZ * speed * dt, PET_RADIUS)
+  petRoot.position.x = next.x
+  petRoot.position.z = next.z
+  petRoot.position.y = petFootY + (onBridge(next.x, next.z) ? 0.28 : 0)
+  petRoot.rotation.y = Math.atan2(dirX, dirZ)
+  playWalk(0.12)
+  applyFollowCamera()
+}
+
 function tick() {
-  const dt = clock.getDelta()
+  const dt = Math.min(0.05, clock.getDelta())
   if (windmillBlades) windmillBlades.rotation.z -= dt * 0.18
   if (creekFlow) creekFlow.offset.y = (creekFlow.offset.y - dt * 0.035) % 1
   if (skyDome) {
     skyDome.position.x = camera.position.x
     skyDome.position.z = camera.position.z
   }
+  updatePetMovement(dt)
+  if (stick.active) applyFollowCamera()
   mixer?.update(dt)
-  controls.update()
+  if (!stick.active) controls.update()
   if (loadStatus === 'ready') updateFullness()
   renderer.render(scene, camera)
   requestAnimationFrame(tick)
@@ -1310,6 +1508,12 @@ function tick() {
 
 function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) return
+  if (import.meta.env.DEV) {
+    navigator.serviceWorker.getRegistrations?.().then((regs) => {
+      for (const reg of regs) reg.unregister()
+    })
+    return
+  }
   if (navigator.serviceWorker.controller) {
     let reloading = false
     navigator.serviceWorker.addEventListener('controllerchange', () => {
@@ -1328,6 +1532,18 @@ function registerServiceWorker() {
 async function boot() {
   registerServiceWorker()
   renderPetList()
+  if (import.meta.env.DEV) {
+    window.__3dpet = {
+      pet: () => petRoot,
+      colliders: () => colliders,
+      canStandAt,
+      onBridge,
+      stick,
+      camera,
+      controls,
+      captureFollowOffset,
+    }
+  }
   const saved = localStorage.getItem(STORAGE_PET)
   const initial = PETS.find((p) => p.id === saved) || PETS.find((p) => p.id === 'shiba') || PETS[0]
   await loadPet(initial)
