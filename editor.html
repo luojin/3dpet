@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>3D 场景编辑器</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    overflow: hidden; background: #0f1115; color: #e8eaf0;
+  }
+  #app { position: fixed; inset: 0; }
+  canvas { display: block; touch-action: none; }
+  .panel {
+    position: absolute; background: rgba(20, 22, 30, .82);
+    backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.08);
+    border-radius: 12px; padding: 12px 14px; font-size: 13px;
+  }
+  .btn {
+    cursor: pointer; border: 1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06); color: #e8eaf0;
+    padding: 6px 12px; border-radius: 8px; font-size: 12.5px; transition: .15s;
+    display: inline-block;
+  }
+  .btn:hover { background: rgba(255,255,255,.13); }
+  .btn.active { background: #4f8cff; border-color: #4f8cff; color: #fff; }
+  .btn.primary { background: #2f9e72; border-color: #2f9e72; color: #fff; }
+  .ptitle { font-size: 12.5px; font-weight: 600; margin-bottom: 6px; }
+
+  #topbar {
+    top: max(10px, env(safe-area-inset-top, 0px));
+    left: 10px; right: 10px;
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    z-index: 5;
+  }
+  .title { font-size: 15px; font-weight: 600; margin-right: 4px; }
+  .sep { width: 1px; height: 18px; background: rgba(255,255,255,.15); margin: 0 4px; }
+  #status { color: #3ddc97; font-size: 12px; margin-left: 4px; min-width: 90px; }
+
+  #inventory {
+    left: 14px; top: 118px; bottom: 96px; width: 228px;
+    display: flex; flex-direction: column; padding: 12px; z-index: 4;
+  }
+  #invList { overflow-y: auto; flex: 1; margin-top: 4px; padding-right: 4px; }
+  #invList::-webkit-scrollbar { width: 6px; }
+  #invList::-webkit-scrollbar-thumb { background: rgba(255,255,255,.14); border-radius: 3px; }
+  .cat { font-size: 11.5px; color: #9aa3b5; font-weight: 600; margin: 10px 0 6px; }
+  .cat:first-child { margin-top: 0; }
+  .item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 5px; margin-bottom: 5px; font-size: 12px;
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08);
+    border-radius: 7px; cursor: grab; user-select: none;
+  }
+  .item:hover { background: rgba(255,255,255,.13); }
+  .item.armed { border-color: #4f8cff; background: rgba(79,140,255,.22); }
+  .item:active { cursor: grabbing; }
+  .item .thumb {
+    width: 50px; height: 50px; flex: none; object-fit: cover;
+    border-radius: 6px; background: rgba(255,255,255,.06);
+  }
+  .item .iname { font-size: 11.5px; line-height: 1.35; word-break: break-word; }
+  .pthumb {
+    width: 100%; height: 92px; object-fit: cover; border-radius: 8px;
+    margin-bottom: 8px; background: rgba(255,255,255,.06); display: block;
+  }
+
+  #props { right: 14px; top: 118px; width: 214px; z-index: 4; }
+  #props .row { display: flex; justify-content: space-between; line-height: 1.9; }
+  #props .k { color: #9aa3b5; }
+  #props .v { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .empty { color: #7b8496; font-size: 12px; }
+  .del {
+    width: 100%; margin-top: 10px; text-align: center;
+    background: rgba(255,90,90,.18); border-color: rgba(255,90,90,.35); color: #ff8a8a;
+  }
+
+  #hints {
+    bottom: 14px; left: 254px; right: 240px; line-height: 1.7; color: #aab; font-size: 12.5px;
+    z-index: 4;
+  }
+  kbd {
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+    border-radius: 4px; padding: 1px 6px;
+    font-family: ui-monospace, Menlo, monospace; font-size: 11.5px;
+  }
+
+  #loading {
+    position: absolute; inset: 0; z-index: 30;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 14px; background: rgba(10,12,18,.9);
+  }
+  #loading.hidden { display: none; }
+  .spinner {
+    width: 38px; height: 38px; border: 3px solid rgba(255,255,255,.15);
+    border-top-color: #4f8cff; border-radius: 50%; animation: spin .9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading .txt { color: #9aa3b5; font-size: 13px; }
+
+  @media (max-width: 860px) {
+    #inventory {
+      left: 8px; right: 8px; top: auto;
+      bottom: max(8px, env(safe-area-inset-bottom, 0px));
+      width: auto; height: 148px;
+    }
+    #invList { display: flex; gap: 8px; overflow-x: auto; overflow-y: hidden; }
+    .cat { display: none; }
+    .item { width: 132px; flex: none; margin-bottom: 0; }
+    #props { display: none; }
+    #hints { display: none; }
+    .title { display: none; }
+  }
+</style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <div id="topbar" class="panel">
+    <span class="title">场景编辑器</span>
+    <button class="btn" id="btnMove" type="button">移动</button>
+    <button class="btn" id="btnRotate" type="button">旋转</button>
+    <button class="btn" id="btnDelete" type="button">删除</button>
+    <span class="sep"></span>
+    <button class="btn" id="btnExport" type="button">导出场景</button>
+    <button class="btn primary" id="btnUse" type="button">设为当前场景</button>
+    <button class="btn" id="btnImport" type="button">导入场景</button>
+    <button class="btn" id="btnClear" type="button">清空</button>
+    <button class="btn" id="btnRestore" type="button">还原基础场景</button>
+    <span class="sep"></span>
+    <a class="btn" id="backLink" href="./index.html" style="text-decoration:none">返回宠物</a>
+    <span id="status"></span>
+  </div>
+
+  <div id="inventory" class="panel">
+    <div class="ptitle">背包 · 拖到场景，或点一下再点地面</div>
+    <div id="invList"></div>
+  </div>
+
+  <div id="props" class="panel">
+    <div class="ptitle">属性</div>
+    <div id="propBody"><div class="empty">未选中物体</div></div>
+  </div>
+
+  <div id="hints" class="panel">
+    <div>打开时就是农场、小溪、木桥这些基础场景，没有自动村落。这些原有物品可以选中、移动、旋转、删除。</div>
+    <div><kbd>Q</kbd> 移动　<kbd>E</kbd> 旋转　<kbd>Del</kbd> 删除　<kbd>Esc</kbd> 取消选中</div>
+    <div>新拖入的房屋会按谷仓的占地对齐，动物、树、围栏按真实大小缩放。「还原基础场景」回到最初布局。</div>
+  </div>
+
+  <div id="loading">
+    <div class="spinner"></div>
+    <div class="txt" id="loadTxt">加载中…</div>
+  </div>
+
+  <input type="file" id="fileInput" accept=".json,application/json" hidden />
+  <script type="module" src="/src/editor.js"></script>
+</body>
+</html>

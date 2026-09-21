@@ -1,0 +1,388 @@
+{
+  "scenes": [
+    {
+      "id": "palace-a",
+      "label": "宫殿 A",
+      "category": "palace",
+      "files": [
+        "models/palace/15348363-9f48-409b-9c33-dbd08441514a.glb",
+        "models/palace/36d65045-d2ff-4689-a34d-a4acbe1873cb.glb",
+        "models/palace/44e04449-9ea6-4daf-bfb9-2f2cc09aecd2.glb",
+        "models/palace/4dd57aa3-e10b-43c8-9661-080167b1e060.glb",
+        "models/palace/5642bd4a-1742-4025-9700-511a7a55c0b2.glb",
+        "models/palace/6bf79810-ea32-4451-84e9-221e69020a40.glb",
+        "models/palace/76843ec7-2056-43ed-853e-d32d0b8253c4.glb",
+        "models/palace/77b9f0fc-39c3-49a0-a995-0994ab4fda85.glb",
+        "models/palace/77daa612-3c25-490a-970c-a6bfa24425a5.glb",
+        "models/palace/8bec6466-329a-4f83-99d9-600a00e2c437.glb",
+        "models/palace/af1eb6e4-a1b9-415f-bb4d-6098c4a70b40.glb"
+      ]
+    },
+    {
+      "id": "palace-b",
+      "label": "宫殿 B",
+      "category": "palace",
+      "files": [
+        "models/palace/af9ebe34-f519-48eb-9185-3e2c76405697.glb",
+        "models/palace/b0cfd860-1324-4253-b718-659ffae2188e.glb",
+        "models/palace/c3ccd51c-0343-4237-83f4-0bc0183911d6.glb",
+        "models/palace/dc22806e-b00a-4890-b988-f716b0342c9c.glb",
+        "models/palace/de15e8eb-53a1-4e7e-a4c5-fc2299f57158.glb",
+        "models/palace/e269a247-0b4b-4c67-b413-befa8d3f5b36.glb",
+        "models/palace/f01e8d13-d978-4d21-8980-d03b907fe362.glb",
+        "models/palace/f85cdc23-da38-43ee-8214-c466609ffd86.glb",
+        "models/palace/fad3fcb3-d174-469b-9f1c-a3ab00d74fb9.glb",
+        "models/palace/fdad940c-9adb-404a-acd0-bd728e8e3159.glb"
+      ]
+    },
+    {
+      "id": "farm-a",
+      "label": "农场 A",
+      "category": "farm",
+      "files": [
+        "models/farm/094335c0-632a-45f5-8583-27d5cab53b54.glb",
+        "models/farm/30b503df-69cf-4086-b323-f1dcbb95a7c4.glb",
+        "models/farm/3944662c-ccdd-440d-94bf-a1e37624a536.glb",
+        "models/farm/3f01eddc-5941-42f5-acb7-363f9db61fd8.glb",
+        "models/farm/42b1eade-d1dc-43c8-9769-cfc5ded6c3e6.glb",
+        "models/farm/4807851f-46d4-4541-ae98-24ec0a525f0c.glb",
+        "models/farm/48c5f4af-07d6-4493-a261-0919967afe85.glb",
+        "models/farm/613c3274-c1d2-409e-82f7-9ae4db261e56.glb",
+        "models/farm/665ee586-6494-4fbd-be46-fcbe600f653e.glb"
+      ]
+    },
+    {
+      "id": "farm-b",
+      "label": "农场 B",
+      "category": "farm",
+      "files": [
+        "models/farm/73641d10-547f-47d8-9c86-ad92158fd78b.glb",
+        "models/farm/82fa17f2-fd94-4cdc-8937-f01c5b6e23b8.glb",
+        "models/farm/a4bd2c4e-fe71-4dbd-9881-cf3ac8a00bbf.glb",
+        "models/farm/e0ecaf1c-bff4-4f30-9a53-0cf0c1c90deb.glb",
+        "models/farm/e53463b2-c5e8-4734-bc36-9ea8581ab148.glb",
+        "models/farm/ee42b0f4-fbcd-425f-804e-02d791bc35f6.glb",
+        "models/farm/f8d23d79-6dfd-4667-a961-5b4dad5a32d6.glb",
+        "models/farm/ff99ce31-85dd-4863-b145-24a6646a2b20.glb"
+      ]
+    },
+    {
+      "id": "village-a",
+      "label": "村庄 A",
+      "category": "village",
+      "files": [
+        "models/village/203c2af9-cd8b-47d0-b8d5-424b9c4448f7.glb",
+        "models/village/210b9cdc-9b11-4ef5-a61b-5c31d0689090.glb",
+        "models/village/270a08b6-87e1-47eb-ad1c-5fd7be321bcd.glb",
+        "models/village/290d6a8b-ab0f-4670-ad61-8c95eef13b46.glb",
+        "models/village/2c5938cb-4005-4958-829b-e191be39b3b9.glb",
+        "models/village/319982c7-df90-47d7-bde1-68453148dc63.glb",
+        "models/village/341c9305-c6dd-4427-ad00-620ad57eb14e.glb",
+        "models/village/38f1a1fe-0fe5-4f1f-b16f-e93f04e014da.glb",
+        "models/village/4019f937-c8c6-4cf3-84c1-4dcc21d4a9cb.glb",
+        "models/village/5a6e6186-ab59-4c81-a5e1-9beb5e1bb8e9.glb",
+        "models/village/5c18a372-e0fb-490f-aa90-8bdd04d7e92f.glb",
+        "models/village/5d3066f4-58ac-46d4-899c-39d9e566e9df.glb",
+        "models/village/6aa29eb3-1bd8-4a40-a47d-d4a8c831eb04.glb",
+        "models/village/713fa0e6-a648-4896-817d-64b68ed0dac8.glb",
+        "models/village/7eb6f9bc-5995-413b-88c9-7809ebd16bf7.glb"
+      ]
+    },
+    {
+      "id": "village-b",
+      "label": "村庄 B",
+      "category": "village",
+      "files": [
+        "models/village/856b5db4-21c1-406b-a800-d96843d1ec69.glb",
+        "models/village/87f41533-43e6-4fb8-9579-5e853eec8d5f.glb",
+        "models/village/8ab0043c-9a54-47b1-9b46-31b98d2f6ed8.glb",
+        "models/village/8ee025af-e6cf-46d8-879b-62befe03ae9d.glb",
+        "models/village/a347d313-8be5-4585-9fc4-2f7e745c0648.glb",
+        "models/village/af83abca-9b41-4229-9652-e336a5f5eaba.glb",
+        "models/village/b03d60f5-bcfa-487b-9064-65f3b0f8ad6b.glb",
+        "models/village/b8a2c719-5a70-4d6c-8049-90af7e3f89ee.glb",
+        "models/village/c08c3ac7-e65c-41f5-b200-b00c12103e57.glb",
+        "models/village/c664d338-cf21-4cda-b0f8-efe0f0826a10.glb",
+        "models/village/c6f65def-08c5-4c81-b17f-f37b171ad911.glb",
+        "models/village/cd6aa318-ee06-4205-ad72-d7c8df47fc4d.glb",
+        "models/village/df9e4b83-758a-4fc7-b311-70fc949ed7ff.glb",
+        "models/village/e4626d45-1c88-4a3f-9bc8-c7a077f108f0.glb",
+        "models/village/fe8e639d-f07d-4512-a38d-3519b44a5fdc.glb"
+      ]
+    }
+  ],
+  "meta": {
+    "15348363-9f48-409b-9c33-dbd08441514a": {
+      "name": "Temple",
+      "thumb": "thumbs/15348363-9f48-409b-9c33-dbd08441514a.webp"
+    },
+    "36d65045-d2ff-4689-a34d-a4acbe1873cb": {
+      "name": "Hut",
+      "thumb": "thumbs/36d65045-d2ff-4689-a34d-a4acbe1873cb.webp"
+    },
+    "44e04449-9ea6-4daf-bfb9-2f2cc09aecd2": {
+      "name": "Watch Tower",
+      "thumb": "thumbs/44e04449-9ea6-4daf-bfb9-2f2cc09aecd2.webp"
+    },
+    "4dd57aa3-e10b-43c8-9661-080167b1e060": {
+      "name": "Barracks",
+      "thumb": "thumbs/4dd57aa3-e10b-43c8-9661-080167b1e060.webp"
+    },
+    "5642bd4a-1742-4025-9700-511a7a55c0b2": {
+      "name": "Mountain",
+      "thumb": "thumbs/5642bd4a-1742-4025-9700-511a7a55c0b2.webp"
+    },
+    "6bf79810-ea32-4451-84e9-221e69020a40": {
+      "name": "Windmill",
+      "thumb": "thumbs/6bf79810-ea32-4451-84e9-221e69020a40.webp"
+    },
+    "76843ec7-2056-43ed-853e-d32d0b8253c4": {
+      "name": "Hut",
+      "thumb": "thumbs/76843ec7-2056-43ed-853e-d32d0b8253c4.webp"
+    },
+    "77b9f0fc-39c3-49a0-a995-0994ab4fda85": {
+      "name": "Wooden Fortress Gate",
+      "thumb": "thumbs/77b9f0fc-39c3-49a0-a995-0994ab4fda85.webp"
+    },
+    "77daa612-3c25-490a-970c-a6bfa24425a5": {
+      "name": "Barracks",
+      "thumb": "thumbs/77daa612-3c25-490a-970c-a6bfa24425a5.webp"
+    },
+    "8bec6466-329a-4f83-99d9-600a00e2c437": {
+      "name": "Small Watch Tower",
+      "thumb": "thumbs/8bec6466-329a-4f83-99d9-600a00e2c437.webp"
+    },
+    "af1eb6e4-a1b9-415f-bb4d-6098c4a70b40": {
+      "name": "Watch Tower",
+      "thumb": "thumbs/af1eb6e4-a1b9-415f-bb4d-6098c4a70b40.webp"
+    },
+    "af9ebe34-f519-48eb-9185-3e2c76405697": {
+      "name": "Watch Tower",
+      "thumb": "thumbs/af9ebe34-f519-48eb-9185-3e2c76405697.webp"
+    },
+    "b0cfd860-1324-4253-b718-659ffae2188e": {
+      "name": "Stone Wall",
+      "thumb": "thumbs/b0cfd860-1324-4253-b718-659ffae2188e.webp"
+    },
+    "c3ccd51c-0343-4237-83f4-0bc0183911d6": {
+      "name": "Fortress",
+      "thumb": "thumbs/c3ccd51c-0343-4237-83f4-0bc0183911d6.webp"
+    },
+    "dc22806e-b00a-4890-b988-f716b0342c9c": {
+      "name": "Castle",
+      "thumb": "thumbs/dc22806e-b00a-4890-b988-f716b0342c9c.webp"
+    },
+    "de15e8eb-53a1-4e7e-a4c5-fc2299f57158": {
+      "name": "Rock",
+      "thumb": "thumbs/de15e8eb-53a1-4e7e-a4c5-fc2299f57158.webp"
+    },
+    "e269a247-0b4b-4c67-b413-befa8d3f5b36": {
+      "name": "Wall Towers Door Seco",
+      "thumb": "thumbs/e269a247-0b4b-4c67-b413-befa8d3f5b36.webp"
+    },
+    "f01e8d13-d978-4d21-8980-d03b907fe362": {
+      "name": "Mountain Group",
+      "thumb": "thumbs/f01e8d13-d978-4d21-8980-d03b907fe362.webp"
+    },
+    "f85cdc23-da38-43ee-8214-c466609ffd86": {
+      "name": "Dock",
+      "thumb": "thumbs/f85cdc23-da38-43ee-8214-c466609ffd86.webp"
+    },
+    "fad3fcb3-d174-469b-9f1c-a3ab00d74fb9": {
+      "name": "Dock",
+      "thumb": "thumbs/fad3fcb3-d174-469b-9f1c-a3ab00d74fb9.webp"
+    },
+    "fdad940c-9adb-404a-acd0-bd728e8e3159": {
+      "name": "Mountain",
+      "thumb": "thumbs/fdad940c-9adb-404a-acd0-bd728e8e3159.webp"
+    },
+    "094335c0-632a-45f5-8583-27d5cab53b54": {
+      "name": "Pug",
+      "thumb": "thumbs/094335c0-632a-45f5-8583-27d5cab53b54.webp"
+    },
+    "30b503df-69cf-4086-b323-f1dcbb95a7c4": {
+      "name": "Horse",
+      "thumb": "thumbs/30b503df-69cf-4086-b323-f1dcbb95a7c4.webp"
+    },
+    "3944662c-ccdd-440d-94bf-a1e37624a536": {
+      "name": "Silo",
+      "thumb": "thumbs/3944662c-ccdd-440d-94bf-a1e37624a536.webp"
+    },
+    "3f01eddc-5941-42f5-acb7-363f9db61fd8": {
+      "name": "ChickenCoop",
+      "thumb": "thumbs/3f01eddc-5941-42f5-acb7-363f9db61fd8.webp"
+    },
+    "42b1eade-d1dc-43c8-9769-cfc5ded6c3e6": {
+      "name": "Open Barn",
+      "thumb": "thumbs/42b1eade-d1dc-43c8-9769-cfc5ded6c3e6.webp"
+    },
+    "4807851f-46d4-4541-ae98-24ec0a525f0c": {
+      "name": "Tower Windmill",
+      "thumb": "thumbs/4807851f-46d4-4541-ae98-24ec0a525f0c.webp"
+    },
+    "48c5f4af-07d6-4493-a261-0919967afe85": {
+      "name": "Cow",
+      "thumb": "thumbs/48c5f4af-07d6-4493-a261-0919967afe85.webp"
+    },
+    "613c3274-c1d2-409e-82f7-9ae4db261e56": {
+      "name": "Big Barn",
+      "thumb": "thumbs/613c3274-c1d2-409e-82f7-9ae4db261e56.webp"
+    },
+    "665ee586-6494-4fbd-be46-fcbe600f653e": {
+      "name": "Pig",
+      "thumb": "thumbs/665ee586-6494-4fbd-be46-fcbe600f653e.webp"
+    },
+    "73641d10-547f-47d8-9c86-ad92158fd78b": {
+      "name": "Llama",
+      "thumb": "thumbs/73641d10-547f-47d8-9c86-ad92158fd78b.webp"
+    },
+    "82fa17f2-fd94-4cdc-8937-f01c5b6e23b8": {
+      "name": "Silo House",
+      "thumb": "thumbs/82fa17f2-fd94-4cdc-8937-f01c5b6e23b8.webp"
+    },
+    "a4bd2c4e-fe71-4dbd-9881-cf3ac8a00bbf": {
+      "name": "Sheep",
+      "thumb": "thumbs/a4bd2c4e-fe71-4dbd-9881-cf3ac8a00bbf.webp"
+    },
+    "e0ecaf1c-bff4-4f30-9a53-0cf0c1c90deb": {
+      "name": "Barn",
+      "thumb": "thumbs/e0ecaf1c-bff4-4f30-9a53-0cf0c1c90deb.webp"
+    },
+    "e53463b2-c5e8-4734-bc36-9ea8581ab148": {
+      "name": "Fence",
+      "thumb": "thumbs/e53463b2-c5e8-4734-bc36-9ea8581ab148.webp"
+    },
+    "ee42b0f4-fbcd-425f-804e-02d791bc35f6": {
+      "name": "Fence",
+      "thumb": "thumbs/ee42b0f4-fbcd-425f-804e-02d791bc35f6.webp"
+    },
+    "f8d23d79-6dfd-4667-a961-5b4dad5a32d6": {
+      "name": "Small Barn",
+      "thumb": "thumbs/f8d23d79-6dfd-4667-a961-5b4dad5a32d6.webp"
+    },
+    "ff99ce31-85dd-4863-b145-24a6646a2b20": {
+      "name": "Zebra",
+      "thumb": "thumbs/ff99ce31-85dd-4863-b145-24a6646a2b20.webp"
+    },
+    "203c2af9-cd8b-47d0-b8d5-424b9c4448f7": {
+      "name": "Bell",
+      "thumb": "thumbs/203c2af9-cd8b-47d0-b8d5-424b9c4448f7.webp"
+    },
+    "210b9cdc-9b11-4ef5-a61b-5c31d0689090": {
+      "name": "Fantasy Stable",
+      "thumb": "thumbs/210b9cdc-9b11-4ef5-a61b-5c31d0689090.webp"
+    },
+    "270a08b6-87e1-47eb-ad1c-5fd7be321bcd": {
+      "name": "Fantasy Inn",
+      "thumb": "thumbs/270a08b6-87e1-47eb-ad1c-5fd7be321bcd.webp"
+    },
+    "290d6a8b-ab0f-4670-ad61-8c95eef13b46": {
+      "name": "Round Window",
+      "thumb": "thumbs/290d6a8b-ab0f-4670-ad61-8c95eef13b46.webp"
+    },
+    "2c5938cb-4005-4958-829b-e191be39b3b9": {
+      "name": "Tree",
+      "thumb": "thumbs/2c5938cb-4005-4958-829b-e191be39b3b9.webp"
+    },
+    "319982c7-df90-47d7-bde1-68453148dc63": {
+      "name": "Clover",
+      "thumb": "thumbs/319982c7-df90-47d7-bde1-68453148dc63.webp"
+    },
+    "341c9305-c6dd-4427-ad00-620ad57eb14e": {
+      "name": "Fantasy House",
+      "thumb": "thumbs/341c9305-c6dd-4427-ad00-620ad57eb14e.webp"
+    },
+    "38f1a1fe-0fe5-4f1f-b16f-e93f04e014da": {
+      "name": "Sawmill Saw",
+      "thumb": "thumbs/38f1a1fe-0fe5-4f1f-b16f-e93f04e014da.webp"
+    },
+    "4019f937-c8c6-4cf3-84c1-4dcc21d4a9cb": {
+      "name": "Fantasy Sawmill",
+      "thumb": "thumbs/4019f937-c8c6-4cf3-84c1-4dcc21d4a9cb.webp"
+    },
+    "5a6e6186-ab59-4c81-a5e1-9beb5e1bb8e9": {
+      "name": "Bags",
+      "thumb": "thumbs/5a6e6186-ab59-4c81-a5e1-9beb5e1bb8e9.webp"
+    },
+    "5c18a372-e0fb-490f-aa90-8bdd04d7e92f": {
+      "name": "Bag",
+      "thumb": "thumbs/5c18a372-e0fb-490f-aa90-8bdd04d7e92f.webp"
+    },
+    "5d3066f4-58ac-46d4-899c-39d9e566e9df": {
+      "name": "Bush",
+      "thumb": "thumbs/5d3066f4-58ac-46d4-899c-39d9e566e9df.webp"
+    },
+    "6aa29eb3-1bd8-4a40-a47d-d4a8c831eb04": {
+      "name": "Package",
+      "thumb": "thumbs/6aa29eb3-1bd8-4a40-a47d-d4a8c831eb04.webp"
+    },
+    "713fa0e6-a648-4896-817d-64b68ed0dac8": {
+      "name": "Fence",
+      "thumb": "thumbs/713fa0e6-a648-4896-817d-64b68ed0dac8.webp"
+    },
+    "7eb6f9bc-5995-413b-88c9-7809ebd16bf7": {
+      "name": "Path Straight",
+      "thumb": "thumbs/7eb6f9bc-5995-413b-88c9-7809ebd16bf7.webp"
+    },
+    "856b5db4-21c1-406b-a800-d96843d1ec69": {
+      "name": "Tree",
+      "thumb": "thumbs/856b5db4-21c1-406b-a800-d96843d1ec69.webp"
+    },
+    "87f41533-43e6-4fb8-9579-5e853eec8d5f": {
+      "name": "Stairs",
+      "thumb": "thumbs/87f41533-43e6-4fb8-9579-5e853eec8d5f.webp"
+    },
+    "8ab0043c-9a54-47b1-9b46-31b98d2f6ed8": {
+      "name": "Hay",
+      "thumb": "thumbs/8ab0043c-9a54-47b1-9b46-31b98d2f6ed8.webp"
+    },
+    "8ee025af-e6cf-46d8-879b-62befe03ae9d": {
+      "name": "Package",
+      "thumb": "thumbs/8ee025af-e6cf-46d8-879b-62befe03ae9d.webp"
+    },
+    "a347d313-8be5-4585-9fc4-2f7e745c0648": {
+      "name": "Mill",
+      "thumb": "thumbs/a347d313-8be5-4585-9fc4-2f7e745c0648.webp"
+    },
+    "af83abca-9b41-4229-9652-e336a5f5eaba": {
+      "name": "Bush with Flowers",
+      "thumb": "thumbs/af83abca-9b41-4229-9652-e336a5f5eaba.webp"
+    },
+    "b03d60f5-bcfa-487b-9064-65f3b0f8ad6b": {
+      "name": "Clover",
+      "thumb": "thumbs/b03d60f5-bcfa-487b-9064-65f3b0f8ad6b.webp"
+    },
+    "b8a2c719-5a70-4d6c-8049-90af7e3f89ee": {
+      "name": "Fantasy House",
+      "thumb": "thumbs/b8a2c719-5a70-4d6c-8049-90af7e3f89ee.webp"
+    },
+    "c08c3ac7-e65c-41f5-b200-b00c12103e57": {
+      "name": "Fantasy House",
+      "thumb": "thumbs/c08c3ac7-e65c-41f5-b200-b00c12103e57.webp"
+    },
+    "c664d338-cf21-4cda-b0f8-efe0f0826a10": {
+      "name": "Blacksmith",
+      "thumb": "thumbs/c664d338-cf21-4cda-b0f8-efe0f0826a10.webp"
+    },
+    "c6f65def-08c5-4c81-b17f-f37b171ad911": {
+      "name": "Rocks",
+      "thumb": "thumbs/c6f65def-08c5-4c81-b17f-f37b171ad911.webp"
+    },
+    "cd6aa318-ee06-4205-ad72-d7c8df47fc4d": {
+      "name": "Window",
+      "thumb": "thumbs/cd6aa318-ee06-4205-ad72-d7c8df47fc4d.webp"
+    },
+    "df9e4b83-758a-4fc7-b311-70fc949ed7ff": {
+      "name": "Barrel",
+      "thumb": "thumbs/df9e4b83-758a-4fc7-b311-70fc949ed7ff.webp"
+    },
+    "e4626d45-1c88-4a3f-9bc8-c7a077f108f0": {
+      "name": "Fantasy Barracks",
+      "thumb": "thumbs/e4626d45-1c88-4a3f-9bc8-c7a077f108f0.webp"
+    },
+    "fe8e639d-f07d-4512-a38d-3519b44a5fdc": {
+      "name": "Bell Tower",
+      "thumb": "thumbs/fe8e639d-f07d-4512-a38d-3519b44a5fdc.webp"
+    }
+  }
+}

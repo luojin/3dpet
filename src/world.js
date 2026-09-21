@@ -6,8 +6,16 @@ import * as THREE from 'three'
 export const colliders = /** @type {CircleCollider[]} */ ([])
 export const bridgeZones = /** @type {BridgeZone[]} */ ([])
 
+/** @type {THREE.Object3D | null} */
+export let creekRoot = null
 /** @type {THREE.CatmullRomCurve3 | null} */
 export let creekCurve = null
+
+const creekLocal = new THREE.Vector3()
+
+export function setCreekRoot(root) {
+  creekRoot = root
+}
 export const CREEK_HALF_WIDTH = 0.95
 export const PET_RADIUS = 0.38
 export const WORLD_RADIUS = 110
@@ -16,14 +24,21 @@ export function resetWorldCollision() {
   colliders.length = 0
   bridgeZones.length = 0
   creekCurve = null
+  creekRoot = null
 }
 
 export function setCreekCurve(curve) {
   creekCurve = curve
 }
 
-export function addCircleCollider(x, z, r, passable = false) {
-  colliders.push({ kind: 'circle', x, z, r, passable })
+export function addCircleCollider(x, z, r, passable = false, source = '') {
+  colliders.push({ kind: 'circle', x, z, r, passable, source })
+}
+
+export function removeCollidersBySource(source) {
+  for (let i = colliders.length - 1; i >= 0; i -= 1) {
+    if (colliders[i].source === source) colliders.splice(i, 1)
+  }
 }
 
 export function addBridgeZone(x, z, halfW, halfL, axisX, axisZ) {
@@ -52,10 +67,18 @@ export function onBridge(x, z) {
 
 export function inCreek(x, z) {
   if (!creekCurve || onBridge(x, z)) return false
+  let px = x
+  let pz = z
+  if (creekRoot) {
+    creekLocal.set(x, 0, z)
+    creekRoot.worldToLocal(creekLocal)
+    px = creekLocal.x
+    pz = creekLocal.z
+  }
   let nearest = Infinity
   for (let i = 0; i <= 400; i += 1) {
     const p = creekCurve.getPoint(i / 400)
-    const d = Math.hypot(p.x - x, p.z - z)
+    const d = Math.hypot(p.x - px, p.z - pz)
     if (d < nearest) nearest = d
   }
   return nearest < CREEK_HALF_WIDTH
